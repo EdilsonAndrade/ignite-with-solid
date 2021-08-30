@@ -34,7 +34,6 @@ describe("ListAllUsersUseCase", () => {
     usersRepository.turnAdmin(user1);
 
     const users = listAllUsersUseCase.execute({ user_id: user1.id });
-
     expect(users).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

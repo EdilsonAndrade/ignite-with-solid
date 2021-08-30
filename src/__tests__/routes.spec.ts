@@ -112,9 +112,9 @@ describe("[GET] /users", () => {
       name: String(Math.random()),
       email: String(Math.random()),
     });
-
-    const response = await request(app).get("/users").set("user_id", user1.id);
-
+    const response = await request(app).get("/users").send({
+      user_id: user1.id,
+    });
     expect(
       response.body.map((res) => ({
         ...res,
