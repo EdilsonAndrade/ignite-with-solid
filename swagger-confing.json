@@ -1,0 +1,294 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Ignite NodeJs with Typescrit - Challeng 02",
+    "description": "This is about a challenge from Ignite",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Edilson"
+    }
+  },
+  "components": {
+    "schemas": {
+      "Users": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "admin": {
+              "type": "string",
+              "example": "false"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "example": "4a922a96c00f-1630236234220"
+            },
+            "name": {
+              "type": "string",
+              "example": "SUV"
+            },
+            "email": {
+              "type": "string",
+              "example": "oi@rocketseat.com.br"
+            },
+            "created_at": {
+              "type": "string",
+              "example": "2021-03-10T22:10:32.992z"
+            },
+            "updated_at": {
+              "type": "string",
+              "example": "2021-03-10T22:10:32.992z"
+            }
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "admin": {
+            "type": "string",
+            "example": "false"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "4a922a96c00f-1630236234220"
+          },
+          "name": {
+            "type": "string",
+            "example": "SUV"
+          },
+          "email": {
+            "type": "string",
+            "example": "oi@rocketseat.com.br"
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2021-03-10T22:10:32.992z"
+          },
+          "updated_at": {
+            "type": "string",
+            "example": "2021-03-10T22:10:32.992z"
+          }
+        }
+      },
+      "UserAdminResponse": {
+        "type": "object",
+        "properties": {
+          "admin": {
+            "type": "string",
+            "example": "true"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "4a922a96c00f-1630236234220"
+          },
+          "name": {
+            "type": "string",
+            "example": "SUV"
+          },
+          "email": {
+            "type": "string",
+            "example": "oi@rocketseat.com.br"
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2021-03-10T22:10:32.992z"
+          },
+          "updated_at": {
+            "type": "string",
+            "example": "2021-03-10T22:10:32.992z"
+          }
+        }
+      },
+      "UserRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "SUV"
+          },
+          "email": {
+            "type": "string",
+            "example": "edilson@mail.com"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Retorna uma lista de usuário",
+        "description": "Retorna uma lista de usuário",
+        "responses": {
+          "200": {
+            "description": "Retorna todos os usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email ja está sendo utilizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Você precisa ser administrador para listar todos os usuários"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "description": "Cria um novo usuário",
+        "summary": "Cria um novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Operação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email ja está sendo utilizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Email já está sendo utilizado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Retorna um usuário específico",
+        "description": "Retorna um usuário específico",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The id of a user",
+            "schema": {
+              "type": "string",
+              "minimun": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Um usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["users"],
+        "summary": "Torna um usuário em admin",
+        "description": "Torna um usuário em admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The id of a user",
+            "schema": {
+              "type": "string",
+              "minimun": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Um objeto de usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAdminResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
